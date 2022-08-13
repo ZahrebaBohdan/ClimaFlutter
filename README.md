@@ -1,7 +1,7 @@
 
 # Clima ☁
 
-## What has benn created
+## What has been created
 
 Weather app with beautiful UI. You are be able to find out the live weather data in the current location of the device as well as the weather for any city you can think of!
 
