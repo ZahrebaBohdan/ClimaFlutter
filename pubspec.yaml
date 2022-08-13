@@ -1,5 +1,5 @@
 name: clima
-description: A new Flutter application.
+description: Weather app by Zahreba Bohdan.
 
 version: 1.0.0+1
 
@@ -11,6 +11,9 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^0.1.2
+  geolocator: ^9.0.1
+  http: ^0.13.5
+  getwidget: ^3.0.1
 
 dev_dependencies:
   flutter_test:
