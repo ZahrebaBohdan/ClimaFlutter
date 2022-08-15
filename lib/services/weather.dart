@@ -59,21 +59,21 @@ class WeatherModel {
 
   String getBackground(int condition) {
     if (condition < 300) {
-      return 'groza.jpg';
+      return 'images/groza.jpg';
     } else if (condition < 400) {
-      return 'drizzle.jpg';
+      return 'images/drizzle.jpg';
     } else if (condition < 600) {
-      return 'rain.jpg';
+      return 'images/rain.jpg';
     } else if (condition < 700) {
-      return 'snow.jpg';
+      return 'images/snow.jpg';
     } else if (condition < 800) {
-      return 'fog.jpg';
+      return 'images/fog.jpg';
     } else if (condition == 800) {
-      return 'sunny.webp';
+      return 'images/sunny.webp';
     } else if (condition <= 804) {
-      return 'sunny.webp';
+      return 'images/cloudy.webp';
     } else {
-      return 'loaction_background.jpg';
+      return 'images/loaction_background.jpg';
     }
   }
 }

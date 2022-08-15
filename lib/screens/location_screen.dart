@@ -41,7 +41,7 @@ class _LocationScreenState extends State<LocationScreen> {
         weatherIcon = weather.getWeatherIcon(condition);
         weatherMessage = weather.getMessage(temperature);
         cityName = weatherData['name'];
-        var background = DecorationImage(
+         background = DecorationImage(
           image: AssetImage(
             weather.getBackground(condition),
           ),
@@ -71,7 +71,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 children: <Widget>[
                   FlatButton(
                     onPressed: () async {
-                      var weatherData = weather.getLocationWeather();
+                      var weatherData = await weather.getLocationWeather();
                       updateUI(weatherData);
                     },
                     child: Icon(
@@ -88,7 +88,8 @@ class _LocationScreenState extends State<LocationScreen> {
                         ),
                       );
                       if (typedName != null) {
-                        var weatherData = weather.getCityWeather(cityName);
+                        var weatherData =
+                            await weather.getCityWeather(typedName);
                         updateUI(weatherData);
                       }
                     },
