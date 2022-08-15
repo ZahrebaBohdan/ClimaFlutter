@@ -8,7 +8,9 @@ class WeatherModel {
   Future<dynamic> getCityWeather(String cityName) async {
     NetworkHelper networkHelper = NetworkHelper(
         '$openWeatherMapURL?q=$cityName&appid=$apiKey&units=metric');
+
     var weatherData = await networkHelper.getData();
+
     return weatherData;
   }
 
@@ -52,6 +54,26 @@ class WeatherModel {
       return 'You\'ll need 🧣 and 🧤';
     } else {
       return 'Bring a 🧥 just in case';
+    }
+  }
+
+  String getBackground(int condition) {
+    if (condition < 300) {
+      return 'groza.jpg';
+    } else if (condition < 400) {
+      return 'drizzle.jpg';
+    } else if (condition < 600) {
+      return 'rain.jpg';
+    } else if (condition < 700) {
+      return 'snow.jpg';
+    } else if (condition < 800) {
+      return 'fog.jpg';
+    } else if (condition == 800) {
+      return 'sunny.webp';
+    } else if (condition <= 804) {
+      return 'sunny.webp';
+    } else {
+      return 'loaction_background.jpg';
     }
   }
 }

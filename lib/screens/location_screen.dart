@@ -6,6 +6,7 @@ import 'package:clima/utilities/constants.dart';
 class LocationScreen extends StatefulWidget {
   LocationScreen({this.locationWeather});
   final locationWeather;
+
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
@@ -16,28 +17,40 @@ class _LocationScreenState extends State<LocationScreen> {
   String weatherIcon;
   String weatherMessage;
   String cityName;
+  DecorationImage background;
+
   @override
   void initState() {
     super.initState();
     updateUI(widget.locationWeather);
   }
 
-  void updateUI(dynamic weatherData) {
-    setState(() {
-      if (weatherData == null) {
-        temperature = 0;
-        weatherIcon = 'Error';
-        weatherMessage = 'Unable to get weather data';
-        cityName = '...';
-        return;
-      }
-      double temp = weatherData['main']['temp'];
-      temperature = temp.toInt();
-      var condition = weatherData['weather'][0]['id'];
-      weatherIcon = weather.getWeatherIcon(condition);
-      weatherMessage = weather.getMessage(temperature);
-      cityName = weatherData['name'];
-    });
+  void updateUI(weatherData) async {
+    setState(
+      () {
+        if (weatherData == null) {
+          temperature = 0;
+          weatherIcon = 'Error';
+          weatherMessage = 'Unable to get weather data';
+          cityName = '...';
+          return;
+        }
+        double temp = weatherData['main']['temp'];
+        temperature = temp.toInt();
+        var condition = weatherData['weather'][0]['id'];
+        weatherIcon = weather.getWeatherIcon(condition);
+        weatherMessage = weather.getMessage(temperature);
+        cityName = weatherData['name'];
+        var background = DecorationImage(
+          image: AssetImage(
+            weather.getBackground(condition),
+          ),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+              Colors.white.withOpacity(0.8), BlendMode.dstATop),
+        );
+      },
+    );
   }
 
   @override
@@ -45,12 +58,7 @@ class _LocationScreenState extends State<LocationScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/location_background.jpg'),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.8), BlendMode.dstATop),
-          ),
+          image: background,
         ),
         constraints: BoxConstraints.expand(),
         child: SafeArea(
@@ -64,7 +72,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   FlatButton(
                     onPressed: () async {
                       var weatherData = weather.getLocationWeather();
-                      updateUI(await weatherData);
+                      updateUI(weatherData);
                     },
                     child: Icon(
                       Icons.near_me,
@@ -80,7 +88,8 @@ class _LocationScreenState extends State<LocationScreen> {
                         ),
                       );
                       if (typedName != null) {
-                        var weatherData = weather.getCityWeather(cityName);
+                        var weatherData =
+                            await weather.getCityWeather(typedName);
                         updateUI(weatherData);
                       }
                     },
