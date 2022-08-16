@@ -2,6 +2,8 @@ import 'package:clima/screens/city_screen.dart';
 import 'package:clima/services/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
+import 'package:flutter/services.dart';
+import 'package:getwidget/getwidget.dart';
 
 class LocationScreen extends StatefulWidget {
   LocationScreen({this.locationWeather});
@@ -22,6 +24,7 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   void initState() {
     super.initState();
+
     updateUI(widget.locationWeather);
   }
 
@@ -41,7 +44,7 @@ class _LocationScreenState extends State<LocationScreen> {
         weatherIcon = weather.getWeatherIcon(condition);
         weatherMessage = weather.getMessage(temperature);
         cityName = weatherData['name'];
-         background = DecorationImage(
+        background = DecorationImage(
           image: AssetImage(
             weather.getBackground(condition),
           ),
@@ -53,52 +56,74 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 
+  void onLoading() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return GFLoader(
+          type: GFLoaderType.custom,
+          child: Image(
+            image: AssetImage('images/sun.gif'),
+            height: 100,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          image: background,
-        ),
-        constraints: BoxConstraints.expand(),
-        child: SafeArea(
+          decoration: BoxDecoration(
+            image: background,
+          ),
+          constraints: BoxConstraints.expand(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () async {
-                      var weatherData = await weather.getLocationWeather();
-                      updateUI(weatherData);
-                    },
-                    child: Icon(
-                      Icons.near_me,
-                      size: 50.0,
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: () async {
-                      var typedName = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: ((context) => CityScreen()),
-                        ),
-                      );
-                      if (typedName != null) {
-                        var weatherData =
-                            await weather.getCityWeather(typedName);
+              SafeArea(
+              bottom: false,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    FlatButton(
+                      onPressed: () async {
+                        onLoading();
+                        var weatherData = await weather.getLocationWeather();
+                        Navigator.pop(context);
                         updateUI(weatherData);
-                      }
-                    },
-                    child: Icon(
-                      Icons.location_city,
-                      size: 50.0,
+                      },
+                      child: Icon(
+                        Icons.near_me,
+                        size: 50.0,
+                      ),
                     ),
-                  ),
-                ],
+                    FlatButton(
+                      onPressed: () async {
+                        var typedName = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) => CityScreen()),
+                          ),
+                        );
+                        if (typedName != null) {
+                          onLoading();
+                          var weatherData =
+                              await weather.getCityWeather(typedName);
+                          Navigator.pop(context);
+                          updateUI(weatherData);
+                        }
+                      },
+                      child: Icon(
+                        Icons.location_city,
+                        size: 50.0,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 15.0),
@@ -124,9 +149,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 ),
               ),
             ],
-          ),
-        ),
-      ),
+          )),
     );
   }
 }

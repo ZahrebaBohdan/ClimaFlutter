@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'location.dart';
 import 'networking.dart';
 
@@ -77,3 +79,5 @@ class WeatherModel {
     }
   }
 }
+
+

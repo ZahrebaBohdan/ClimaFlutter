@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:clima/screens/location_screen.dart';
 import 'package:clima/services/weather.dart';
 
@@ -19,7 +21,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     WeatherModel weatherModel = WeatherModel();
     var weatherData = await weatherModel.getLocationWeather();
 
-    Navigator.push(
+    await Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: ((context) => LocationScreen(
