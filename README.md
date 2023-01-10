@@ -1,7 +1,13 @@
 
 # Clima ☁
+videos:
+
+https://user-images.githubusercontent.com/49997734/211522586-032ba7a2-8af0-4914-96f3-7deee44b2667.mp4
+
+
 ![clima](https://user-images.githubusercontent.com/49997734/184952788-090b2c2a-4dc3-4123-965a-ef6afb8ac3df.gif)
 ## What has been created
+
 
 Weather app with beautiful UI. You are be able to find out the live weather data in the current location of the device as well as the weather for any city you can think of!
 
